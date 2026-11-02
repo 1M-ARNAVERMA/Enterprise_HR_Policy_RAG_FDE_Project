@@ -8,7 +8,7 @@ from docx import Document as DocxDocument
 
 SUPPORTED = {".pdf", ".txt", ".md", ".docx"}
 
-
+# Jo bhi file ka extension hai ussey uss extractor se data extract karenge 
 def load_file(path: Path) -> list[Document]:
     suffix = path.suffix.lower()
     if suffix == ".pdf":

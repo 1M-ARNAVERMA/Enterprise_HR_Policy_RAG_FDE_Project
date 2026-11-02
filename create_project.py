@@ -1,3 +1,4 @@
+# This file is used to create the project structure for a Python application. It creates the necessary folders and files for the project.
 from pathlib import Path
 
 root = Path(".")

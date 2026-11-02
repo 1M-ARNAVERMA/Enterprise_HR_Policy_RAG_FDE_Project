@@ -24,6 +24,7 @@ def llm():
             model=settings.openai_model,
             temperature=0,
             api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
         )
     return _llm
 

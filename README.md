@@ -125,8 +125,9 @@ Generate from KB   [4] Tavily Web Search
 | Layer | Technology | Purpose |
 |---|---|---|
 | Agent workflow | LangGraph | Stateful routing and conditional decisions |
-| LLM | OpenAI | Routing, grading, rewriting, answer generation |
-| Embeddings | OpenAI `text-embedding-3-small` | Vector embeddings |
+| LLM and embeddings API | OpenRouter (OpenAI-compatible API) | Model access for routing, grading, generation, and embeddings |
+| Chat model | `openai/gpt-4o-mini` | Routing, grading, rewriting, answer generation |
+| Embeddings | `openai/text-embedding-3-small` | Vector embeddings |
 | Vector DB | Pinecone | Private enterprise HR knowledge base |
 | External search | Tavily | Fallback when company HR KB is insufficient |
 | API | FastAPI | Backend and REST endpoints |
@@ -194,16 +195,19 @@ pip install -r requirements.txt
 Copy `.env.example` to `.env` and add your keys.
 
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_API_KEY=your_openrouter_api_key_here
+OPENAI_BASE_URL=https://openrouter.ai/api/v1
 TAVILY_API_KEY=your_tavily_api_key_here
 PINECONE_API_KEY=your_pinecone_api_key_here
 PINECONE_INDEX_NAME=fde-hr-policy-rag
 PINECONE_NAMESPACE=company-hr-kb
-OPENAI_MODEL=gpt-4o-mini
-EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_MODEL=openai/gpt-4o-mini
+EMBEDDING_MODEL=openai/text-embedding-3-small
 ADMIN_API_KEY=change-me-in-production
 APP_ENV=development
 ```
+
+`OPENAI_API_KEY` is the OpenRouter API key in this setup; the variable name is retained because the LangChain clients use OpenAI-compatible APIs. Choose models available to your OpenRouter account. To use the direct OpenAI API instead, set `OPENAI_BASE_URL=https://api.openai.com/v1` and use model IDs accepted by OpenAI.
 
 ### Step 4 — Load sample HR knowledge
 
