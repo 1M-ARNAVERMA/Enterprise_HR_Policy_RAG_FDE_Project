@@ -223,7 +223,27 @@ python run.py
 
 Open `http://127.0.0.1:8080` and FastAPI docs at `http://127.0.0.1:8080/docs`.
 
-## 8. Classroom Demo Scenarios
+## 8. Deploying to Vercel
+
+Import the repository into Vercel with the project root as the root directory. Vercel detects the FastAPI application in `app/main.py` and serves the mounted UI and static assets. The included `vercel.json` allows up to 60 seconds for an invocation, which gives document parsing, embedding, and Pinecone indexing more time to complete.
+
+Add these environment variables in **Project Settings → Environment Variables**:
+
+```env
+OPENAI_API_KEY=your_openrouter_api_key
+OPENAI_BASE_URL=https://openrouter.ai/api/v1
+OPENAI_MODEL=openai/gpt-4o-mini
+EMBEDDING_MODEL=openai/text-embedding-3-small
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_INDEX_NAME=fde-hr-policy-rag
+PINECONE_NAMESPACE=company-hr-kb
+TAVILY_API_KEY=your_tavily_api_key
+ADMIN_API_KEY=use-a-long-random-secret
+```
+
+Set a unique, strong `ADMIN_API_KEY`; do not use the example or the development default. Redeploy after adding or changing environment variables. On Vercel, audit SQLite data and uploaded source files use the function's temporary directory and are not durable across deployments or function instances. Pinecone remains the persistent document index; use managed persistent storage if audit history must be retained.
+
+## 9. Classroom Demo Scenarios
 
 ### Demo A — Private KB Success
 Ask: **How many annual leave days do employees receive?**
@@ -261,6 +281,6 @@ Ask an ambiguous HR question such as: **What happens if mine is wrong?**
 
 If neither private nor web evidence is sufficient, the workflow can rewrite the query, retry the KB, and eventually stop with insufficient evidence rather than hallucinating.
 
-## 9. What Changed From the IT Support Reference
+## 10. What Changed From the IT Support Reference
 
 The application structure, graph topology, API shape, retrieval logic, ingestion layer, audit layer, Docker setup, and frontend behavior remain the same. Only domain-specific elements were changed: HR prompts, HR configuration names, UI wording, example questions, sample documents, and documentation.
