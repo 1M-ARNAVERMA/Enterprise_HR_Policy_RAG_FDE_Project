@@ -225,7 +225,7 @@ Open `http://127.0.0.1:8080` and FastAPI docs at `http://127.0.0.1:8080/docs`.
 
 ## 8. Deploying to Vercel
 
-Import the repository into Vercel with the project root as the root directory. Vercel detects the FastAPI application in `app/main.py` and serves the mounted UI and static assets. The included `vercel.json` allows up to 60 seconds for an invocation, which gives document parsing, embedding, and Pinecone indexing more time to complete.
+Import the repository into Vercel with the project root as the root directory. Vercel detects the FastAPI application in `app/main.py` and serves the mounted UI and static assets. The included `vercel.json` allows up to 60 seconds for an invocation, which gives document parsing, embedding, and Pinecone indexing more time to complete. Pinecone upserts run synchronously on Vercel because serverless runtimes may not support the OS semaphores used by the SDK's asynchronous thread pool.
 
 Add these environment variables in **Project Settings → Environment Variables**:
 

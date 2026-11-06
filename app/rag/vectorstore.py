@@ -2,7 +2,7 @@ import time
 from pinecone import Pinecone , ServerlessSpec
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
-from app.core.config import get_settings
+from app.core.config import get_settings, IS_VERCEL
 
 settings = get_settings()
 
@@ -106,4 +106,4 @@ def get_retriever():
 
 def add_documents(chunks):
     store = get_vectorstore()
-    return store.add_documents(chunks)
+    return store.add_documents(chunks, async_req=not IS_VERCEL)
