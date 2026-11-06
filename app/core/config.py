@@ -1,8 +1,12 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 from pathlib import Path
+import os
+import tempfile
 
 BASE_DIR = Path(__file__).resolve().parents[2]
+VERCEL_RUNTIME_DIR = Path(tempfile.gettempdir()) / "enterprise_hr_copilot"
+IS_VERCEL = os.getenv("VERCEL") == "1"
 
 
 class Settings(BaseSettings): # This will be required while making the FAST API server and also for the RAG pipeline to work properly. The settings will be used to configure the application and the RAG pipeline.
@@ -19,8 +23,12 @@ class Settings(BaseSettings): # This will be required while making the FAST API 
     top_k: int = 4
     max_retries: int = 1
     admin_api_key: str = "change-me-in-production"
-    audit_db_path: str = str(BASE_DIR / "data" / "audit.db")
-    upload_dir: str = str(BASE_DIR / "uploads")
+    audit_db_path: str = str(
+        VERCEL_RUNTIME_DIR / "audit.db"
+        if IS_VERCEL
+        else BASE_DIR / "data" / "audit.db"
+    )
+    upload_dir: str = str(VERCEL_RUNTIME_DIR / "uploads" if IS_VERCEL else BASE_DIR / "uploads")
     sample_kb_dir: str = str(BASE_DIR / "data" / "sample_kb")
     model_config = SettingsConfigDict(env_file=str(BASE_DIR / ".env"), extra="ignore")
 
